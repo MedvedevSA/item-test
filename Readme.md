@@ -20,6 +20,8 @@
 
 ## REST API Методы
 
+## /items
+
 ### GET /items/   
 
 Получить список всех элементов
@@ -69,6 +71,16 @@ curl -X 'PUT' \
 }'
 ```
 
+## /order/
+
+### GET /order/
+
+Получить список всех элементов корзины
+```
+curl -X 'GET' \
+  'http://localhost:8000/api/v1/order/' \
+  -H 'accept: application/json'
+```
 
 ### POST /order/
 

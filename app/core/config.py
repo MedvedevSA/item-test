@@ -1,7 +1,6 @@
-import secrets
 from typing import Any, Dict, List, Optional, Union
 
-from pydantic import AnyHttpUrl, BaseSettings, EmailStr, HttpUrl, PostgresDsn, validator
+from pydantic import AnyHttpUrl, BaseSettings, PostgresDsn, validator
 
 
 class Settings(BaseSettings):
@@ -10,9 +9,7 @@ class Settings(BaseSettings):
 
     SERVER_NAME: str = "server-sam"
     SERVER_HOST: AnyHttpUrl = "http://localhost"
-    # BACKEND_CORS_ORIGINS is a JSON-formatted list of origins
-    # e.g: '["http://localhost", "http://localhost:4200", "http://localhost:3000", \
-    # "http://localhost:8080", "http://local.dockertoolbox.tiangolo.com"]'
+
     BACKEND_CORS_ORIGINS: List[AnyHttpUrl] = ["http://localhost"]
 
     @validator("BACKEND_CORS_ORIGINS", pre=True)
@@ -24,15 +21,6 @@ class Settings(BaseSettings):
         raise ValueError(v)
 
     PROJECT_NAME: str = "project-name"
-    #SENTRY_DSN: Optional[HttpUrl] = None
-
-    """
-    @validator("SENTRY_DSN", pre=True)
-    def sentry_dsn_can_be_blank(cls, v: str) -> Optional[str]:
-        if len(v) == 0:
-            return None
-        return v
-    """
 
     POSTGRES_SERVER: str = "localhost"
     POSTGRES_USER: str = "postgres"

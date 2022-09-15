@@ -69,7 +69,7 @@ def read_item_id(
 def create_item(
     *,
     db: Session = Depends(deps.get_db),
-    item_in: schemas.OrderCreate,
+    item_in: schemas.ItemCreate,
 ) -> Any:
     """
     Create new item.
