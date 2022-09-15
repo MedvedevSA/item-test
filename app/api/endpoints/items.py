@@ -32,6 +32,8 @@ def filtred_name_items(
 ) -> Any:
 
     items = crud.item.get_filtred_name(substr, desc_=desc, db=db)
+    if not items:
+        raise HTTPException(status_code=404, detail="Item not found")
 
     return items
 
@@ -44,6 +46,8 @@ def filtred_price_items(
 ) -> Any:
 
     items = crud.item.get_filtred_price(from_=from_, to=to, desc_=desc, db=db)
+    if not items:
+        raise HTTPException(status_code=404, detail="Item not found")
 
     return items
 
@@ -53,7 +57,11 @@ def read_item_id(
     db: Session = Depends(deps.get_db)
 ) -> Any:
 
+
     item_by_id = crud.item.get_id(db, id=item_id)
+
+    if not item_by_id:
+        raise HTTPException(status_code=404, detail="Item not found")
 
     return item_by_id
 
@@ -66,5 +74,24 @@ def create_item(
     """
     Create new item.
     """
+
     item = crud.item.create(db=db, obj_in=item_in)
+    
+    return item
+
+
+@router.put("/{id}", response_model=schemas.Item)
+def update_item(
+    *,
+    db: Session = Depends(deps.get_db),
+    id: int,
+    item_in: schemas.ItemUpdate,
+) -> Any:
+    """
+    Update an item.
+    """
+    item = crud.item.get_id(db=db, id=id)
+    if not item:
+        raise HTTPException(status_code=404, detail="Item not found")
+    item = crud.item.update(db=db, db_obj=item, obj_in=item_in)
     return item
